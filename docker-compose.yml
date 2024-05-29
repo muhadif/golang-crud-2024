@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: always
+    container_name: golang-crud
+    ports:
+      - "3309:3306"
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      - MYSQL_USER=golang-crud
+      - MYSQL_PASSWORD=golang-crud
+      - MYSQL_ROOT_PASSWORD=golang-crud
+      - MYSQL_DATABASE=golang-crud
+      - MYSQL_HOST_NAME=mysql_db
+    networks:
+      - app-network
+
+volumes:
+  data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
