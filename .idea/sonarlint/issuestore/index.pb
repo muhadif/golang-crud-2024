@@ -79,3 +79,19 @@ S
 #core/repository/product-category.go,a/2/a274017c3121e609672879d806fbac1c53e0bcc6
 T
 $repository/product-category/mysql.go,9/4/9408d78e1bfb871a345fb902e0a42ebbb49ae438
+J
+core/repository/product.go,0/a/0afd1a77b465c50d225a335cdd68b03c1eb727a3
+K
+repository/product/mysql.go,4/2/42a97a6a54fabb15231f9bf519ce8ffc8dd6763f
+B
+handler/product.go,e/3/e315f405d06bd7bd605e2148a660178e03f6021f
+O
+core/service/product-service.go,7/b/7bc0729313437242156b26fd4eb8a9225dafa1f6
+\
+,documentation/go-criud-2024/Get Products.bru,9/6/96bd126c7d59bde7cb93a4897ab601360dc87ea1
+]
+-.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
+d
+4documentation/go-criud-2024/Get Product Category.bru,0/6/062e095ad6d79e6e29a01a8f64679eecf75c2dc7
+S
+#.idea/sonarlint/issuestore/index.pb,9/f/9fe84ebb15faf917b7def6236dba604453cc61e0

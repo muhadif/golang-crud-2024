@@ -10,6 +10,7 @@ import (
 func NewRouter(app *app.App) *gin.Engine {
 	authHandler := handler.NewAuthHandler(app.AuthService)
 	productCategoryHandler := handler.NewProductCategory(app.ProductCategoryService)
+	productHandler := handler.NewProduct(app.ProductService)
 
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -19,7 +20,8 @@ func NewRouter(app *app.App) *gin.Engine {
 	router.POST("/auth/login", authHandler.Login)
 	router.POST("/auth/register", authHandler.Register)
 
-	router.Use(auth.AuthMiddleware(app.Cfg)).GET("product-category", productCategoryHandler.GetProductCategory)
+	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/product-category", productCategoryHandler.GetProductCategory)
+	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/product", productHandler.GetProduct)
 
 	return router
 }

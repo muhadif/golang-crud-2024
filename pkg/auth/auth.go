@@ -103,6 +103,7 @@ func AuthMiddleware(cfg config.Config) gin.HandlerFunc {
 		if err == nil && userClaim != nil {
 			c.Set("user-context", userClaim)
 			c.Next()
+			return
 		}
 		api.ResponseFailed(c, fault.ErrorDictionary(fault.HTTPUnauthorizedError, coreErr.ErrTokenNotValid))
 		return
