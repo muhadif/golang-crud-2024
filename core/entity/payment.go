@@ -3,11 +3,10 @@ package entity
 import "time"
 
 type PaymentItem struct {
-	ProductSerial         string
-	CheckoutSessionSerial string
-	Price                 float64
-	Quantity              int32
-	Product               *Product
+	ProductSerial string
+	Price         float64
+	Quantity      int32
+	Product       *Product
 }
 
 type PaymentHistory struct {
@@ -33,3 +32,7 @@ const (
 	PaymentStatusExpired   = "EXPIRED"
 	PaymentStatusCancelled = "CANCELLED"
 )
+
+type CreatePaymentRequest struct {
+	PaymentMethod PaymentMethod
+}
