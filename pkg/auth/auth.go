@@ -102,6 +102,7 @@ func AuthMiddleware(cfg config.Config) gin.HandlerFunc {
 		userClaim, err := ValidateToken(authHeader, cfg)
 		if err == nil && userClaim != nil {
 			c.Set("user-context", userClaim)
+			c.Set("userSerial", userClaim.UserSerial)
 			c.Next()
 			return
 		}
