@@ -9,6 +9,7 @@ import (
 type CheckoutService interface {
 	CreateCheckout(ctx context.Context, req *entity.CreateCheckoutSession) error
 	GetCurrentCheckout(ctx context.Context, userSerial string) (*entity.GetCheckoutSessionResponse, error)
+	DeleteCheckout(ctx context.Context, userSerial string) error
 }
 
 type checkoutService struct {
@@ -47,4 +48,8 @@ func (c checkoutService) GetCurrentCheckout(ctx context.Context, userSerial stri
 		CartItems: currentCart,
 		Total:     totalPrice,
 	}, nil
+}
+
+func (c checkoutService) DeleteCheckout(ctx context.Context, userSerial string) error {
+	return c.checkoutRepository.DeleteCheckout(ctx, userSerial)
 }

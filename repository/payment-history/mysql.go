@@ -2,7 +2,6 @@ package payment_history
 
 import (
 	"context"
-	"fmt"
 	"golang-crud-2024/core/entity"
 	coreErr "golang-crud-2024/core/error"
 	"golang-crud-2024/core/repository"
@@ -22,7 +21,7 @@ type repo struct {
 }
 
 func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (err error) {
-	tx := r.db.Begin()
+	tx := r.db.WithContext(ctx).Begin()
 	defer func() {
 		if err != nil {
 			tx.Rollback()
@@ -39,22 +38,23 @@ func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (er
 		return err
 	}
 	for _, item := range req.PaymentItems {
-		fmt.Println(item.Product)
 		var product *entity.Product
-		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("serial = ?", item.ProductSerial).First(&product).Error
+		err := tx.WithContext(ctx).Clauses(clause.Locking{Strength: "UPDATE"}).Where("serial = ?", item.ProductSerial).First(&product).Error
 		if err != nil {
 			return err
 		}
+
 		if product.Stock < item.Quantity {
-			return fault.ErrorDictionary(fault.HTTPBadRequestError, coreErr.ErrEmailTaken)
+			err = fault.ErrorDictionary(fault.HTTPBadRequestError, coreErr.ErrProductStock)
+			return err
 		}
 
-		err = tx.Raw("UPDATE product SET stock = stock - ? WHERE serial = ? FOR UPDATE", item.Product.Stock, item.Product.Serial).Error
+		err = tx.WithContext(ctx).Exec("UPDATE product SET stock = stock - ? WHERE serial = ?", item.Quantity, item.Product.Serial).Error
 		if err != nil {
 			return err
 		}
 
-		err = tx.Create(item).Error
+		err = tx.WithContext(ctx).Create(item).Error
 		if err != nil {
 			return err
 		}

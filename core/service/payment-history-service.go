@@ -58,6 +58,10 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 		return err
 	}
 
+	err = p.checkoutService.DeleteCheckout(ctx, req.UserSerial)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
