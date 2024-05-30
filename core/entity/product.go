@@ -7,7 +7,7 @@ type Product struct {
 	Price             float64           `json:"price"`
 	Stock             int               `json:"stock"`
 	Description       string            `json:"description"`
-	ProductCategories []ProductCategory `json:"productCategories" gorm:"many2many:product_product_category;foreignKey:serial;joinForeignKey:product_serial;References:serial;joinReferences:product_category_serial"`
+	ProductCategories []ProductCategory `json:"productCategories,omitempty" gorm:"many2many:product_product_category;foreignKey:serial;joinForeignKey:product_serial;References:serial;joinReferences:product_category_serial"`
 }
 
 func (p Product) TableName() string {
