@@ -7,7 +7,7 @@ import (
 )
 
 type ProductService interface {
-	GetProduct(ctx context.Context) ([]*entity.Product, error)
+	GetProduct(ctx context.Context, req entity.GetProductRequest) ([]*entity.Product, error)
 }
 
 type product struct {
@@ -20,6 +20,6 @@ func NewProductService(productRepo repository.ProductRepository) ProductService 
 	}
 }
 
-func (p product) GetProduct(ctx context.Context) ([]*entity.Product, error) {
-	return p.productRepo.GetProduct(ctx)
+func (p product) GetProduct(ctx context.Context, req entity.GetProductRequest) ([]*entity.Product, error) {
+	return p.productRepo.GetProduct(ctx, req)
 }

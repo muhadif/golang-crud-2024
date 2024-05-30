@@ -6,5 +6,5 @@ import (
 )
 
 type ProductRepository interface {
-	GetProduct(ctx context.Context) ([]*entity.Product, error)
+	GetProduct(ctx context.Context, req entity.GetProductRequest) ([]*entity.Product, error)
 }

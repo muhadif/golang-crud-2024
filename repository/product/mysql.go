@@ -17,10 +17,14 @@ type repo struct {
 	db *gorm.DB
 }
 
-func (r repo) GetProduct(ctx context.Context) ([]*entity.Product, error) {
+func (r repo) GetProduct(ctx context.Context, req entity.GetProductRequest) ([]*entity.Product, error) {
 	var products []*entity.Product
 
-	err := r.db.Table("product").Find(&products).Error
+	query := r.db.Table("product").Joins("JOIN product_product_category ppc ON product.serial = ppc.product_serial")
+	if req.ProductCategorySerial != "" {
+		query = query.Where("ppc.product_category_serial = ?", req.ProductCategorySerial)
+	}
+	err := query.Preload("ProductCategories").Find(&products).Error
 	if err != nil {
 		return nil, err
 	}

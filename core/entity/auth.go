@@ -6,7 +6,7 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	AccessToken *AccessToken
+	AccessToken *AccessToken `json:"access_token"`
 }
 
 type RegisterRequest struct {
@@ -21,10 +21,10 @@ type RefreshTokenRequest struct {
 }
 
 type AccessToken struct {
-	AccessToken  string
-	RefreshToken string
-	AtExpires    int64
-	RtExpires    int64
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+	AtExpires    int64  `json:"atExpires"`
+	RtExpires    int64  `json:"rtExpires"`
 }
 
 type UserToken struct {

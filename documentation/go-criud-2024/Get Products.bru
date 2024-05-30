@@ -5,11 +5,15 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/product
+  url: http://localhost:8080/product?productCategorySerial=002
   body: none
   auth: none
 }
 
+query {
+  productCategorySerial: 002
+}
+
 headers {
-  Authorization: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VyU2VyaWFsIjoiVVNFUjZjM2E5NWUwMjIiLCJSb2xlIjoidXNlciIsImV4cCI6MTcxNzAzNjg3MX0.zQb7b3IGT4eoo_G5QFRDgyFsRk-RnXCibxC6iC05_KqL-r6CAeiSXOFmCMwoiY-ldVsmF25AozAdZo6sLgF0DQ
+  Authorization: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VyU2VyaWFsIjoiVVNFUjRiMTBmMGExYWEiLCJSb2xlIjoidXNlciIsImV4cCI6MTcxNzAzOTgwM30.dcInuHQJ1oCuNjmANjet-Cv0kek83_qp4RDAeMsnFyVSpgJwkMtV8jhn_ugma9KubX8qotlM7b7oCSrYdg7ofQ
 }

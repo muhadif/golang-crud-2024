@@ -1,16 +1,16 @@
 CREATE TABLE IF NOT EXISTS `user`
 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    serial VARCHAR (255) NOT NULL,
-    username VARCHAR (255) NOT NULL,
-    full_name VARCHAR (255) NOT NULL,
-    role VARCHAR (40) NOT NULL,
-    email VARCHAR (255) NOT NUlL,
-    password VARCHAR (255) NOT NULL,
-    status VARCHAR (40) NOT NULL,
-    access_status VARCHAR (40) NOT NULL,
-    registration_otp VARCHAR (16) NOT NULL,
-    forgot_password_token VARCHAR (16) NOT NULL,
+    serial VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    role VARCHAR(40) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    access_status VARCHAR(40) NOT NULL,
+    registration_otp VARCHAR(16) NOT NULL,
+    forgot_password_token VARCHAR(16) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT UC_SERIAL UNIQUE (serial),
@@ -20,38 +20,46 @@ CREATE TABLE IF NOT EXISTS `user`
 CREATE TABLE IF NOT EXISTS `user_token`
 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    user_serial VARCHAR (255) NOT NULL,
-    refresh_token VARCHAR (255) NOT NULL,
+    user_serial VARCHAR(255) NOT NULL,
+    refresh_token VARCHAR(255) NOT NULL,
     CONSTRAINT UC_user_serial UNIQUE (user_serial)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS `product_category`
 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    serial VARCHAR (255) NOT NULL,
-    name VARCHAR (255) NOT NULL,
-    CONSTRAINT UC_user_serial UNIQUE (serial)
-);
+    serial VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    CONSTRAINT UC_serial UNIQUE (serial)
+    );
 
 CREATE TABLE IF NOT EXISTS `product`
 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    serial VARCHAR (255) NOT NULL,
-    name VARCHAR (255) NOT NULL,
+    serial VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) DEFAULT 0.0,
     stock INT DEFAULT 0,
     description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
     CONSTRAINT UC_serial UNIQUE (serial)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS `product_product_category`
 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    product_serial VARCHAR (255) NOT NULL,
-    product_category_serial VARCHAR (255) NOT NULL,
+    product_serial VARCHAR(255) NOT NULL,
+    product_category_serial VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
     CONSTRAINT UC_product_product_category UNIQUE (product_serial, product_category_serial)
-);
-
+    );
 
 -- Seeding
 INSERT INTO product_category (serial, name) VALUES
