@@ -13,6 +13,7 @@ func NewRouter(app *app.App) *gin.Engine {
 	productHandler := handler.NewProduct(app.ProductService)
 	cartHandler := handler.NewCart(app.CartService)
 	checkoutHandler := handler.NewCheckoutHandler(app.CheckoutService)
+	paymentHistoryHandler := handler.NewPaymentHistory(app.PaymentHistoryService)
 
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -32,6 +33,8 @@ func NewRouter(app *app.App) *gin.Engine {
 
 	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/checkout", checkoutHandler.CreateCheckout)
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/checkout", checkoutHandler.GetCurrentCheckout)
+
+	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/payment", paymentHistoryHandler.CreatePayment)
 
 	return router
 }

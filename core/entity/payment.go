@@ -2,20 +2,35 @@ package entity
 
 import "time"
 
-type PaymentItem struct {
-	ProductSerial string
-	Price         float64
-	Quantity      int32
-	Product       *Product
+const (
+	PaymentSerialPrefix = "PAY-"
+)
+
+type PaymentHistoryItem struct {
+	PaymentHistorySerial string
+	ProductSerial        string
+	Price                float64
+	Quantity             int32
+	Product              *Product
+}
+
+func (r PaymentHistoryItem) TableName() string {
+	return "payment_history_item"
 }
 
 type PaymentHistory struct {
-	Date          *time.Time
+	Serial        string
+	OpenTime      *time.Time
+	ExpiredTime   *time.Time
 	UserSerial    string
 	TotalPrice    float64
-	PaymentItems  []*PaymentItem
+	PaymentItems  []*PaymentHistoryItem `gorm:"-"`
 	PaymentMethod PaymentMethod
-	PaymentStatus PaymentStatus
+	Status        PaymentStatus
+}
+
+func (r PaymentHistory) TableName() string {
+	return "payment_history"
 }
 
 type PaymentMethod string
@@ -34,5 +49,6 @@ const (
 )
 
 type CreatePaymentRequest struct {
-	PaymentMethod PaymentMethod
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
+	UserSerial    string
 }
