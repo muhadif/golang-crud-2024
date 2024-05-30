@@ -12,6 +12,7 @@ func NewRouter(app *app.App) *gin.Engine {
 	productCategoryHandler := handler.NewProductCategory(app.ProductCategoryService)
 	productHandler := handler.NewProduct(app.ProductService)
 	cartHandler := handler.NewCart(app.CartService)
+	checkoutHandler := handler.NewCheckoutHandler(app.CheckoutService)
 
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -28,6 +29,9 @@ func NewRouter(app *app.App) *gin.Engine {
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/cart/:id", cartHandler.GetCartByID)
 	router.Use(auth.AuthMiddleware(app.Cfg)).PUT("/cart", cartHandler.UpdateCart)
 	router.Use(auth.AuthMiddleware(app.Cfg)).DELETE("/cart", cartHandler.DeleteCart)
+
+	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/checkout", checkoutHandler.CreateCheckout)
+	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/checkout", checkoutHandler.GetCurrentCheckout)
 
 	return router
 }
