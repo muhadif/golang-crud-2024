@@ -7,6 +7,6 @@ import (
 
 type CheckoutRepository interface {
 	CreateCheckout(ctx context.Context, req *entity.CreateCheckoutSession) error
-	GetCurrentCheckout(ctx context.Context, userSerial string) ([]*entity.CartCheckoutItem, error)
+	GetCurrentCheckout(ctx context.Context, userSerial string) ([]*entity.Cart, error)
 	DeleteCheckout(ctx context.Context, userSerial string) error
 }

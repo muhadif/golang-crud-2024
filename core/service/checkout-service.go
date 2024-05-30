@@ -8,15 +8,16 @@ import (
 
 type CheckoutService interface {
 	CreateCheckout(ctx context.Context, req *entity.CreateCheckoutSession) error
-	GetCurrentCheckout(ctx context.Context, userSerial string) ([]*entity.CartCheckoutItem, error)
+	GetCurrentCheckout(ctx context.Context, userSerial string) (*entity.GetCheckoutSessionResponse, error)
 }
 
 type checkoutService struct {
 	checkoutRepository repository.CheckoutRepository
+	cartRepo           repository.CartRepository
 }
 
-func NewCheckoutService(checkoutRepository repository.CheckoutRepository) CheckoutService {
-	return checkoutService{checkoutRepository: checkoutRepository}
+func NewCheckoutService(checkoutRepository repository.CheckoutRepository, cartRepository repository.CartRepository) CheckoutService {
+	return checkoutService{checkoutRepository: checkoutRepository, cartRepo: cartRepository}
 }
 
 func (c checkoutService) CreateCheckout(ctx context.Context, req *entity.CreateCheckoutSession) error {
@@ -31,6 +32,19 @@ func (c checkoutService) CreateCheckout(ctx context.Context, req *entity.CreateC
 	return c.checkoutRepository.CreateCheckout(ctx, req)
 }
 
-func (c checkoutService) GetCurrentCheckout(ctx context.Context, userSerial string) ([]*entity.CartCheckoutItem, error) {
-	return c.checkoutRepository.GetCurrentCheckout(ctx, userSerial)
+func (c checkoutService) GetCurrentCheckout(ctx context.Context, userSerial string) (*entity.GetCheckoutSessionResponse, error) {
+	currentCart, err := c.checkoutRepository.GetCurrentCheckout(ctx, userSerial)
+	if err != nil {
+		return nil, err
+	}
+
+	var totalPrice float64
+	for _, item := range currentCart {
+		totalPrice += float64(item.Quantity) * item.Product.Price
+	}
+
+	return &entity.GetCheckoutSessionResponse{
+		CartItems: currentCart,
+		Total:     totalPrice,
+	}, nil
 }

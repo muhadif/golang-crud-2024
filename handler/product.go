@@ -22,7 +22,7 @@ func NewProduct(productService service.ProductService) ProductHandler {
 
 func (p productHandler) GetProduct(ctx *gin.Context) {
 	var req entity.GetProductRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		api.ResponseFailed(ctx, err)
 		return
 	}
