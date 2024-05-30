@@ -26,11 +26,6 @@ func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (er
 		if err != nil {
 			tx.Rollback()
 		}
-		if tx != nil {
-			if err := tx.Commit(); err != nil {
-				tx.Rollback()
-			}
-		}
 	}()
 
 	if err := tx.Create(req).Error; err != nil {
@@ -64,7 +59,37 @@ func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (er
 
 }
 
-func (r repo) GetPaymentHistory(ctx context.Context, userSerial string) (*entity.PaymentHistory, error) {
-	//TODO implement me
-	panic("implement me")
+func (r repo) GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error) {
+	var paymentHistories []*entity.PaymentHistory
+
+	err := r.db.WithContext(ctx).Where("user_serial = ?", userSerial).Order("created_at DESC").Find(&paymentHistories).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return paymentHistories, nil
+}
+
+func (r repo) GetPaymentHistoryByTransactionID(ctx context.Context, trxID string) (*entity.PaymentHistory, error) {
+	var payment *entity.PaymentHistory
+
+	err := r.db.WithContext(ctx).Where("transaction_id", trxID).First(&payment).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return payment, nil
+}
+
+func (r repo) UpdatePaymentStatus(ctx context.Context, paymentSerial string, status entity.PaymentStatus) error {
+	err := r.db.WithContext(ctx).Model(&entity.PaymentHistory{}).
+		Where("serial = ?", paymentSerial).
+		Update("status", status).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

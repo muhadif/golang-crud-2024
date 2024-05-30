@@ -11,6 +11,7 @@ import (
 
 type PaymentHistoryHandler interface {
 	CreatePayment(ctx *gin.Context)
+	GetPaymentHistory(ctx *gin.Context)
 }
 
 type paymentHistoryHandler struct {
@@ -37,4 +38,15 @@ func (p paymentHistoryHandler) CreatePayment(ctx *gin.Context) {
 	}
 
 	api.ResponseSuccess(ctx, http.StatusOK, nil)
+}
+
+func (p paymentHistoryHandler) GetPaymentHistory(ctx *gin.Context) {
+	userSerial := context.GetUserSerialFromGinContext(ctx)
+	resp, err := p.paymentHistory.GetPaymentHistory(ctx, userSerial)
+	if err != nil {
+		api.ResponseFailed(ctx, err)
+		return
+	}
+
+	api.ResponseSuccess(ctx, http.StatusOK, resp)
 }

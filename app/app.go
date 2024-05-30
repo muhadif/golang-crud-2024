@@ -18,6 +18,7 @@ type App struct {
 	CartService            service.CartService
 	CheckoutService        service.CheckoutService
 	PaymentHistoryService  service.PaymentHistoryService
+	PaymentCallbackService service.PaymentCallbackService
 
 	Cfg config.Config
 }
@@ -36,6 +37,7 @@ func NewApp(dep *Dependency) *App {
 	cartService := service.NewCartService(cartRepo)
 	checkoutService := service.NewCheckoutService(checkoutRepo, cartRepo)
 	paymentHistoryService := service.NewPaymentHistoryService(paymentHistoryRepo, checkoutService)
+	paymentCallbackService := service.NewPaymentCallbackService(paymentHistoryRepo)
 
 	return &App{
 		AuthService:            authService,
@@ -44,6 +46,7 @@ func NewApp(dep *Dependency) *App {
 		CartService:            cartService,
 		CheckoutService:        checkoutService,
 		PaymentHistoryService:  paymentHistoryService,
+		PaymentCallbackService: paymentCallbackService,
 		Cfg:                    dep.Cfg,
 	}
 }

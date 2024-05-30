@@ -19,14 +19,15 @@ func (r PaymentHistoryItem) TableName() string {
 }
 
 type PaymentHistory struct {
-	Serial        string
-	OpenTime      *time.Time
-	ExpiredTime   *time.Time
-	UserSerial    string
-	TotalPrice    float64
+	Serial        string                `json:"serial"`
+	OpenTime      *time.Time            `json:"openTime"`
+	ExpiredTime   *time.Time            `json:"expiredTime"`
+	UserSerial    string                `json:"userSerial"`
+	TotalPrice    float64               `json:"totalPrice"`
 	PaymentItems  []*PaymentHistoryItem `gorm:"-"`
-	PaymentMethod PaymentMethod
-	Status        PaymentStatus
+	PaymentMethod PaymentMethod         `json:"paymentMethod"`
+	Status        PaymentStatus         `json:"status"`
+	TransactionID string                `json:"transactionId"`
 }
 
 func (r PaymentHistory) TableName() string {

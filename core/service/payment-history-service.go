@@ -10,7 +10,7 @@ import (
 
 type PaymentHistoryService interface {
 	CreatePayment(ctx context.Context, req *entity.CreatePaymentRequest) error
-	GetPaymentHistory(ctx context.Context, userSerial string) (*entity.PaymentHistory, error)
+	GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error)
 }
 
 type paymentHistory struct {
@@ -43,6 +43,8 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 
 	currentTime := time.Now()
 
+	transactionID := string2.GenerateTransactionID()
+
 	paymentHistory := &entity.PaymentHistory{
 		Serial:        paymentSerial,
 		OpenTime:      &currentTime,
@@ -50,6 +52,7 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 		TotalPrice:    currentCheckoutItem.Total,
 		PaymentItems:  paymentItem,
 		PaymentMethod: req.PaymentMethod,
+		TransactionID: transactionID,
 		Status:        entity.PaymentStatusWaiting,
 	}
 
@@ -65,6 +68,6 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 	return nil
 }
 
-func (p paymentHistory) GetPaymentHistory(ctx context.Context, userSerial string) (*entity.PaymentHistory, error) {
-	return nil, nil
+func (p paymentHistory) GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error) {
+	return p.paymentHistoryRepo.GetPaymentHistory(ctx, userSerial)
 }

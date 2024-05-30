@@ -14,6 +14,7 @@ func NewRouter(app *app.App) *gin.Engine {
 	cartHandler := handler.NewCart(app.CartService)
 	checkoutHandler := handler.NewCheckoutHandler(app.CheckoutService)
 	paymentHistoryHandler := handler.NewPaymentHistory(app.PaymentHistoryService)
+	paymentCallbackHandler := handler.NewPaymentCallbackHandler(app.PaymentCallbackService)
 
 	router := gin.New()
 	router.Use(gin.Logger())
@@ -35,6 +36,9 @@ func NewRouter(app *app.App) *gin.Engine {
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/checkout", checkoutHandler.GetCurrentCheckout)
 
 	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/payment", paymentHistoryHandler.CreatePayment)
+	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/payment/history", paymentHistoryHandler.GetPaymentHistory)
+
+	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/callback/payment/va-transfer", paymentCallbackHandler.CallbackPaymentVATransfer)
 
 	return router
 }

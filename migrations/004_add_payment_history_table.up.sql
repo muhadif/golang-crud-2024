@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `payment_history`
     user_serial VARCHAR(255) NOT NULL,
     open_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expired_time TIMESTAMP NULL DEFAULT NULL,
+    transaction_id VARCHAR(256) NOT NULL,
     status VARCHAR(50) NOT NULL,
     payment_method VARCHAR(100) NOT NULL,
     total_price DECIMAL(10, 2) DEFAULT 0.0,
