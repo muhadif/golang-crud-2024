@@ -76,9 +76,14 @@ To get started with the development or deployment of this purchase system, follo
 ### Database Design
 ![erd](documentation/erd.png)
 
-#### Architecture Diagram
+### Architecture Diagram
 ![erd](documentation/arch-diagram.png)
 
+### Technology
+1. **Golang 1.21**, utilized as the primary programming language, offers robust performance and concurrency support, making it ideal for developing scalable and efficient applications.
+2. **MySQL**, the chosen database management system, provides a reliable and well-established solution for handling structured data, ensuring data integrity and efficient query performance.
+3. **Redis**, employed for caching data, significantly enhances application performance by enabling quick data retrieval and reducing the load on the primary database.
+4. **golang-migrate**, a powerful migration tool, is used to manage database schema changes in a controlled and versioned manner, ensuring smooth transitions and consistency across different environments.
 
 ### API Documentation
 - [Auth Documentation](documentation/auth-api.md)
