@@ -14,7 +14,7 @@ type RedisClient struct {
 
 func NewRedisClient(cfg config.Config) (*RedisClient, error) {
 	rdb := redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s:%s", cfg.MySqlHost, cfg.RedisPort),
+		Addr: fmt.Sprintf("%s:%s", cfg.RedisHost, cfg.RedisPort),
 	})
 	ctx := context.Background()
 
