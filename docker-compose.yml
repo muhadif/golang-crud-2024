@@ -4,7 +4,7 @@ services:
     platform: linux/x86_64
     image: mysql:5.7
     restart: always
-    container_name: golang-crud
+    container_name: db-mysql
     ports:
       - "3309:3306"
     volumes:
@@ -14,7 +14,6 @@ services:
       - MYSQL_PASSWORD=golang-crud
       - MYSQL_ROOT_PASSWORD=golang-crud
       - MYSQL_DATABASE=golang-crud
-      - MYSQL_HOST_NAME=mysql_db
     networks:
       - app-network
 
@@ -27,10 +26,24 @@ services:
     networks:
       - app-network
 
-volumes:
-  data:
-    driver: local
+  golang:
+    build: .
+    container_name: golang-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+    networks:
+      - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  data:
+    driver: local
