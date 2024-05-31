@@ -10,4 +10,5 @@ type PaymentHistoryRepository interface {
 	GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error)
 	GetPaymentHistoryByTransactionID(ctx context.Context, trxID string) (*entity.PaymentHistory, error)
 	UpdatePaymentStatus(ctx context.Context, paymentSerial string, status entity.PaymentStatus) error
+	GetPaymentBySerial(ctx context.Context, req *entity.GetPaymentBySerialRequest) (*entity.PaymentHistory, error)
 }

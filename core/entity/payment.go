@@ -53,3 +53,13 @@ type CreatePaymentRequest struct {
 	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	UserSerial    string
 }
+
+type CancelPaymentBySerialRequest struct {
+	PaymentSerial string `json:"paymentSerial"`
+	UserSerial    string
+}
+
+type GetPaymentBySerialRequest struct {
+	PaymentSerial string `json:"paymentSerial"`
+	UserSerial    string
+}

@@ -40,6 +40,7 @@ func NewRouter(app *app.App) *gin.Engine {
 	router.Use(app.AuthMiddleware.AuthMiddleware()).GET("/checkout", checkoutHandler.GetCurrentCheckout)
 
 	router.Use(app.AuthMiddleware.AuthMiddleware()).POST("/payment", paymentHistoryHandler.CreatePayment)
+	router.Use(app.AuthMiddleware.AuthMiddleware()).POST("/payment/cancel", paymentHistoryHandler.CancelPayment)
 	router.Use(app.AuthMiddleware.AuthMiddleware()).GET("/payment/history", paymentHistoryHandler.GetPaymentHistory)
 
 	return router

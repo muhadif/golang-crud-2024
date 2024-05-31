@@ -13,6 +13,8 @@ import (
 type PaymentHistoryService interface {
 	CreatePayment(ctx context.Context, req *entity.CreatePaymentRequest) (*entity.PaymentHistory, error)
 	GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error)
+	GetPaymentBySerial(ctx context.Context, req *entity.GetPaymentBySerialRequest) (*entity.PaymentHistory, error)
+	CancelPaymentBySerial(ctx context.Context, req *entity.CancelPaymentBySerialRequest) error
 }
 
 type paymentHistory struct {
@@ -79,4 +81,38 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 
 func (p paymentHistory) GetPaymentHistory(ctx context.Context, userSerial string) ([]*entity.PaymentHistory, error) {
 	return p.paymentHistoryRepo.GetPaymentHistory(ctx, userSerial)
+}
+
+func (p paymentHistory) GetPaymentBySerial(ctx context.Context, req *entity.GetPaymentBySerialRequest) (*entity.PaymentHistory, error) {
+	return p.paymentHistoryRepo.GetPaymentBySerial(ctx, req)
+}
+
+func (p paymentHistory) CancelPaymentBySerial(ctx context.Context, req *entity.CancelPaymentBySerialRequest) error {
+	paymentHistory, err := p.paymentHistoryRepo.GetPaymentBySerial(ctx, &entity.GetPaymentBySerialRequest{
+		PaymentSerial: req.PaymentSerial,
+		UserSerial:    req.UserSerial,
+	})
+	if err != nil {
+		return err
+	}
+
+	if paymentHistory.Status != entity.PaymentStatusWaiting {
+		return fault.ErrorDictionary(fault.HTTPForbiddenRequestError, coreErr.ErrPaymentNotAcceptable)
+	}
+
+	err = p.paymentHistoryRepo.UpdatePaymentStatus(ctx, paymentHistory.Serial, entity.PaymentStatusCancelled)
+	if err != nil {
+		return err
+	}
+
+	for _, paymentItem := range paymentHistory.PaymentItems {
+		if err := p.productRepository.RollbackStock(ctx, &entity.RollbackStockRequest{
+			ProductSerial: paymentItem.ProductSerial,
+			RollbackStock: paymentItem.Quantity,
+		}); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

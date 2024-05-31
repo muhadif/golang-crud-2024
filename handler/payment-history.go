@@ -11,6 +11,7 @@ import (
 
 type PaymentHistoryHandler interface {
 	CreatePayment(ctx *gin.Context)
+	CancelPayment(ctx *gin.Context)
 	GetPaymentHistory(ctx *gin.Context)
 }
 
@@ -49,4 +50,22 @@ func (p paymentHistoryHandler) GetPaymentHistory(ctx *gin.Context) {
 	}
 
 	api.ResponseSuccess(ctx, http.StatusOK, resp)
+}
+
+func (p paymentHistoryHandler) CancelPayment(ctx *gin.Context) {
+	var req *entity.CancelPaymentBySerialRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		api.ResponseFailed(ctx, err)
+		return
+	}
+
+	req.UserSerial = context.GetUserSerialFromGinContext(ctx)
+
+	err := p.paymentHistory.CancelPaymentBySerial(ctx, req)
+	if err != nil {
+		api.ResponseFailed(ctx, err)
+		return
+	}
+
+	api.ResponseSuccess(ctx, http.StatusOK, nil)
 }

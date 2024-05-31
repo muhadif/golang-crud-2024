@@ -127,3 +127,20 @@ func (r repo) UpdatePaymentStatus(ctx context.Context, paymentSerial string, sta
 
 	return nil
 }
+
+func (r repo) GetPaymentBySerial(ctx context.Context, req *entity.GetPaymentBySerialRequest) (*entity.PaymentHistory, error) {
+	var payment *entity.PaymentHistory
+
+	err := r.db.WithContext(ctx).Where("serial", req.PaymentSerial).Where("user_serial = ?", req.UserSerial).First(&payment).Error
+	if err != nil {
+		return nil, err
+	}
+
+	paymentItems, err := r.GetPaymentHistoryItem(ctx, payment.Serial)
+	if err != nil {
+		return nil, err
+	}
+
+	payment.PaymentItems = paymentItems
+	return payment, nil
+}
