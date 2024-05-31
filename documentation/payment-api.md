@@ -8,6 +8,10 @@
 - **Authentication**: Bearer
 
 ### Request Body
+| Field Name | Type   | Description           | Required |
+|-----------|--------|-----------------------|----------|
+| paymentMethod | string | enum of : VA_TRANSFER | Yes      |
+
 
 ```
 {
@@ -194,6 +198,11 @@ curl --request POST \
 - **Authentication**: -
 
 ### Request Body
+| Field Name | Type   | Description                      | Required |
+|-----------|--------|----------------------------------|----------|
+| transactionId | string | serial from the payment response | Yes      |
+| status | number | enum of : SUCCESS, FAILED        | Yes      |
+
 ```
 {
   "transactionId" : "1fbde43e9f3ec0d247cbe7bccbab6ca7",

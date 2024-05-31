@@ -8,6 +8,11 @@
 - **Authentication**: Bearer
 
 ### Request Body
+| Field Name | Type   | Description             | Required |
+|-----------|--------|-------------------------|----------|
+| productSerial | string | serial from the product | Yes      |
+| quantity | number | number of request       | Yes      |
+
 
 ```
 {
@@ -250,6 +255,10 @@ curl --request DELETE \
 - **Authentication**: Bearer
 
 ### Request Body
+
+| Field Name | Type   | Description                        | Required |
+|-----------|--------|------------------------------------|----------|
+| cartId | string | id result from add product to cart | Yes      |
 
 ```
 {
