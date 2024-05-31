@@ -86,6 +86,8 @@ To get started with the development or deployment of this purchase system, follo
 4. **golang-migrate**, a powerful migration tool, is used to manage database schema changes in a controlled and versioned manner, ensuring smooth transitions and consistency across different environments.
 
 ### API Documentation
+Open example [request](documentation/go-criud-2024) using https://www.usebruno.com/downloads  
+
 - [Auth Documentation](documentation/auth-api.md)
 - [Product Documentation](documentation/product-api.md)
 - [Cart and Checkout Documentation](documentation/cart-api.md)
