@@ -13,20 +13,20 @@ func (c Cart) TableName() string {
 }
 
 type CreateCart struct {
-	UserSerial    string `json:"userSerial"`
-	ProductSerial string `json:"productSerial"`
-	Quantity      int32  `json:"quantity"`
+	UserSerial    string `json:"userSerial" `
+	ProductSerial string `json:"productSerial" binding:"required"`
+	Quantity      int32  `json:"quantity" binding:"required"`
 }
 
 type UpdateCart struct {
-	ID            int64  `json:"id"`
+	ID            int64  `json:"id" binding:"required"`
 	UserSerial    string `json:"userSerial"`
-	ProductSerial string `json:"productSerial"`
-	Quantity      int32  `json:"quantity"`
+	ProductSerial string `json:"productSerial" binding:"required"`
+	Quantity      int32  `json:"quantity" binding:"required"`
 }
 
 type DeleteCart struct {
-	ID         int64  `json:"id"`
+	ID         int64  `json:"id" binding:"required"`
 	UserSerial string `json:"userSerial"`
 }
 

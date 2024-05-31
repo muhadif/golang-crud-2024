@@ -62,6 +62,22 @@ func (c cartService) CreateCart(ctx context.Context, req *entity.CreateCart) err
 }
 
 func (c cartService) UpdateCart(ctx context.Context, req *entity.UpdateCart) error {
+	cart, err := c.CartRepo.GetCartByID(ctx, &entity.GetCartByID{
+		ID:         req.ID,
+		UserSerial: req.UserSerial,
+	})
+	if err != nil {
+		return err
+	}
+
+	if cart == nil {
+		return fault.ErrorDictionary(fault.HTTPNotFound, coreErr.ErrCartNotFOund)
+	}
+
+	if req.Quantity > cart.Product.Stock {
+		return fault.ErrorDictionary(fault.HTTPBadRequestError, coreErr.ErrProductStock)
+	}
+
 	if req.Quantity <= 0 {
 		return c.CartRepo.DeleteCart(ctx, &entity.DeleteCart{
 			ID:         req.ID,
@@ -78,6 +94,18 @@ func (c cartService) UpdateCart(ctx context.Context, req *entity.UpdateCart) err
 }
 
 func (c cartService) DeleteCart(ctx context.Context, req *entity.DeleteCart) error {
+	cart, err := c.CartRepo.GetCartByID(ctx, &entity.GetCartByID{
+		ID:         req.ID,
+		UserSerial: req.UserSerial,
+	})
+	if err != nil {
+		return err
+	}
+
+	if cart == nil {
+		return fault.ErrorDictionary(fault.HTTPNotFound, coreErr.ErrCartNotFOund)
+	}
+
 	return c.CartRepo.DeleteCart(ctx, &entity.DeleteCart{
 		UserSerial: req.UserSerial,
 		ID:         req.ID,

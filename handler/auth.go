@@ -24,16 +24,6 @@ type authHandler struct {
 	authService service.AuthService
 }
 
-func (a *authHandler) CreateCheckout(ctx *gin.Context) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (a *authHandler) GetCurrentCheckout(ctx *gin.Context) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (a *authHandler) Register(ctx *gin.Context) {
 	var req *entity.RegisterRequest
 	if err := ctx.ShouldBind(&req); err != nil {
