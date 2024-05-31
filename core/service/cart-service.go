@@ -3,7 +3,9 @@ package module
 import (
 	"context"
 	"golang-crud-2024/core/entity"
+	coreErr "golang-crud-2024/core/error"
 	"golang-crud-2024/core/repository"
+	"golang-crud-2024/pkg/fault"
 )
 
 type CartService interface {
@@ -15,11 +17,12 @@ type CartService interface {
 }
 
 type cartService struct {
-	CartRepo repository.CartRepository
+	CartRepo    repository.CartRepository
+	productRepo repository.ProductRepository
 }
 
-func NewCartService(cartRepository repository.CartRepository) CartService {
-	return cartService{CartRepo: cartRepository}
+func NewCartService(cartRepository repository.CartRepository, productRepo repository.ProductRepository) CartService {
+	return cartService{CartRepo: cartRepository, productRepo: productRepo}
 }
 
 func (c cartService) GetCart(ctx context.Context, userSerial string) ([]*entity.Cart, error) {
@@ -31,6 +34,15 @@ func (c cartService) GetCartByID(ctx context.Context, req *entity.GetCartByID) (
 }
 
 func (c cartService) CreateCart(ctx context.Context, req *entity.CreateCart) error {
+	product, err := c.productRepo.GetProductBySerial(ctx, req.ProductSerial)
+	if err != nil {
+		return err
+	}
+
+	if product.Stock < req.Quantity {
+		return fault.ErrorDictionary(fault.HTTPBadRequestError, coreErr.ErrProductStock)
+	}
+
 	return c.CartRepo.CreateCart(ctx, &entity.Cart{
 		UserSerial:    req.UserSerial,
 		ProductSerial: req.ProductSerial,
