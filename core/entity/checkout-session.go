@@ -1,8 +1,8 @@
 package entity
 
 type GetCheckoutSessionResponse struct {
-	CartItems []*Cart
-	Total     float64
+	CartItems []*Cart `json:"cartItems"`
+	Total     float64 `json:"total"`
 }
 
 type CreateCheckoutSession struct {
