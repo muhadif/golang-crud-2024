@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"golang-crud-2024/config"
+	"golang-crud-2024/pkg/redis"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -13,18 +14,25 @@ import (
 )
 
 type Dependency struct {
-	Database *gorm.DB
-	HTTP     *http.Client
-	Cfg      config.Config
+	Database    *gorm.DB
+	HTTP        *http.Client
+	Cfg         config.Config
+	RedisClient *redis.RedisClient
 }
 
 func InitDependency() *Dependency {
 	cfg := config.LoadConfig()
 
+	redisClient, err := redis.NewRedisClient(*cfg)
+	if err != nil {
+		panic(err)
+	}
+
 	return &Dependency{
-		Cfg:      *cfg,
-		Database: initDB(*cfg),
-		HTTP:     initHTTP(),
+		Cfg:         *cfg,
+		Database:    initDB(*cfg),
+		RedisClient: redisClient,
+		HTTP:        initHTTP(),
 	}
 }
 

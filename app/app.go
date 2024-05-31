@@ -25,7 +25,7 @@ type App struct {
 
 func NewApp(dep *Dependency) *App {
 	userRepo := user.NewUserRepository(dep.Database)
-	productCategoryRepo := product_category.NewProductCategoryRepository(dep.Database)
+	productCategoryRepo := product_category.NewProductCategoryRepository(dep.Database, dep.RedisClient)
 	productRepo := product.NewRepository(dep.Database)
 	cartRepo := cart.NewRepository(dep.Database)
 	checkoutRepo := checkout.NewRepository(dep.Database)

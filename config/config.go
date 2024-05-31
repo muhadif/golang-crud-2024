@@ -14,6 +14,9 @@ type Config struct {
 	MySqlPort     string `env:"MYSQL_PORT"`
 	MySqlHost     string `env:"MYSQL_HOST"`
 
+	RedisHost string `env:"REDIS_HOST"`
+	RedisPort string `env:"REDIS_PORT"`
+
 	ServiceURL string `env:"SERVICE_URL"`
 
 	UserServiceURL string `env:"USER_SERVICE_URL"`

@@ -8,3 +8,8 @@ import (
 type ProductCategoryRepository interface {
 	GetProductCategory(ctx context.Context) ([]*entity.ProductCategory, error)
 }
+
+type ProductCategoryRedisRepository interface {
+	GetProductCategory(ctx context.Context) ([]*entity.ProductCategory, error)
+	SetProductCategory(ctx context.Context, req []*entity.ProductCategory) error
+}

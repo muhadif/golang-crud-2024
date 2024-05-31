@@ -7,17 +7,17 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewProductCategoryRepository(db *gorm.DB) repository.ProductCategoryRepository {
-	return &repo{
+func NewProductCategoryMysqlRepository(db *gorm.DB) repository.ProductCategoryRepository {
+	return &repoMysql{
 		db: db,
 	}
 }
 
-type repo struct {
+type repoMysql struct {
 	db *gorm.DB
 }
 
-func (r repo) GetProductCategory(ctx context.Context) ([]*entity.ProductCategory, error) {
+func (r repoMysql) GetProductCategory(ctx context.Context) ([]*entity.ProductCategory, error) {
 	var productCategories []*entity.ProductCategory
 
 	err := r.db.Table("product_category").Find(&productCategories).Error
