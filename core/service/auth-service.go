@@ -37,6 +37,10 @@ func (a *authModule) Login(ctx context.Context, req *entity.LoginRequest) (*enti
 		return nil, err
 	}
 
+	if checkUser == nil {
+		return nil, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, coreErr.ErrLoginIncorrect)
+	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(checkUser.Password), []byte(req.Password))
 	if err != nil {
 		return nil, err
