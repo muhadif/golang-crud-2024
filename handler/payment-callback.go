@@ -5,6 +5,7 @@ import (
 	"golang-crud-2024/core/entity"
 	service "golang-crud-2024/core/service"
 	"golang-crud-2024/pkg/api"
+	"golang-crud-2024/pkg/fault"
 	"net/http"
 )
 
@@ -23,13 +24,13 @@ func NewPaymentCallbackHandler(paymentCallbackService service.PaymentCallbackSer
 func (p paymentCallbackHandler) CallbackPaymentVATransfer(ctx *gin.Context) {
 	var req *entity.PaymentCallbackVATransferRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 
 	err := p.paymentCallbackService.CallbackPaymentVATransfer(ctx, req)
 	if err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 

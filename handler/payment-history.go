@@ -56,7 +56,7 @@ func (p paymentHistoryHandler) GetPaymentHistory(ctx *gin.Context) {
 func (p paymentHistoryHandler) CancelPayment(ctx *gin.Context) {
 	var req *entity.CancelPaymentBySerialRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 

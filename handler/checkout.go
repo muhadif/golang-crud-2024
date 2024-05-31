@@ -6,6 +6,7 @@ import (
 	service "golang-crud-2024/core/service"
 	"golang-crud-2024/pkg/api"
 	"golang-crud-2024/pkg/context"
+	"golang-crud-2024/pkg/fault"
 	"net/http"
 )
 
@@ -27,7 +28,7 @@ func NewCheckoutHandler(checkoutService service.CheckoutService) CheckoutHandler
 func (c checkoutHandler) CreateCheckout(ctx *gin.Context) {
 	var req *entity.CreateCheckoutSession
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 

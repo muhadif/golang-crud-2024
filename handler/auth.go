@@ -27,7 +27,7 @@ type authHandler struct {
 func (a *authHandler) Register(ctx *gin.Context) {
 	var req *entity.RegisterRequest
 	if err := ctx.ShouldBind(&req); err != nil {
-		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPBadRequestError, err.Error()))
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 

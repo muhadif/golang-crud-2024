@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang-crud-2024/core/entity"
 	service "golang-crud-2024/core/service"
 	"golang-crud-2024/pkg/api"
+	"golang-crud-2024/pkg/fault"
 	"net/http"
 )
 
@@ -24,10 +24,9 @@ func NewProduct(productService service.ProductService) ProductHandler {
 func (p productHandler) GetProduct(ctx *gin.Context) {
 	var req entity.GetProductRequest
 	if err := ctx.ShouldBind(&req); err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
-	fmt.Println("hello ", req.ProductCategorySerial)
 
 	resp, err := p.productService.GetProduct(ctx, req)
 	if err != nil {
