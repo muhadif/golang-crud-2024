@@ -31,13 +31,13 @@ func (p paymentHistoryHandler) CreatePayment(ctx *gin.Context) {
 
 	req.UserSerial = context.GetUserSerialFromGinContext(ctx)
 
-	err := p.paymentHistory.CreatePayment(ctx, req)
+	resp, err := p.paymentHistory.CreatePayment(ctx, req)
 	if err != nil {
 		api.ResponseFailed(ctx, err)
 		return
 	}
 
-	api.ResponseSuccess(ctx, http.StatusOK, nil)
+	api.ResponseSuccess(ctx, http.StatusOK, resp)
 }
 
 func (p paymentHistoryHandler) GetPaymentHistory(ctx *gin.Context) {

@@ -25,7 +25,9 @@ func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (er
 	defer func() {
 		if err != nil {
 			tx.Rollback()
+			return
 		}
+
 	}()
 
 	if err := tx.Create(req).Error; err != nil {
@@ -55,6 +57,10 @@ func (r repo) CreatePayment(ctx context.Context, req *entity.PaymentHistory) (er
 		}
 	}
 
+	if err := tx.Commit().Error; err != nil {
+		return err
+	}
+
 	return nil
 
 }
@@ -68,7 +74,28 @@ func (r repo) GetPaymentHistory(ctx context.Context, userSerial string) ([]*enti
 		return nil, err
 	}
 
+	for _, paymentHistory := range paymentHistories {
+		paymentItems, err := r.GetPaymentHistoryItem(ctx, paymentHistory.Serial)
+		if err != nil {
+			return nil, err
+		}
+
+		paymentHistory.PaymentItems = paymentItems
+	}
+
 	return paymentHistories, nil
+}
+
+func (r repo) GetPaymentHistoryItem(ctx context.Context, paymentHistorySerial string) ([]*entity.PaymentHistoryItem, error) {
+	var paymentItems []*entity.PaymentHistoryItem
+
+	err := r.db.WithContext(ctx).Preload("Product").Where("payment_history_serial = ?", paymentHistorySerial).Find(&paymentItems).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return paymentItems, nil
 }
 
 func (r repo) GetPaymentHistoryByTransactionID(ctx context.Context, trxID string) (*entity.PaymentHistory, error) {

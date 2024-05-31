@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/payment-history
+  url: http://localhost:8080/payment/history
   body: json
   auth: none
 }
@@ -16,6 +16,5 @@ headers {
 
 body:json {
   {
-    "paymentMethod" : "VA_TRANSFER"
   }
 }

@@ -7,11 +7,11 @@ const (
 )
 
 type PaymentHistoryItem struct {
-	PaymentHistorySerial string
-	ProductSerial        string
-	Price                float64
-	Quantity             int32
-	Product              *Product
+	PaymentHistorySerial string   `json:"paymentHistorySerial"`
+	ProductSerial        string   `json:"productSerial"`
+	Price                float64  `json:"price"`
+	Quantity             int32    `json:"quantity"`
+	Product              *Product `json:"product" gorm:"foreignKey:ProductSerial"`
 }
 
 func (r PaymentHistoryItem) TableName() string {

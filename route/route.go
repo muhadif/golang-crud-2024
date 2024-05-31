@@ -23,6 +23,8 @@ func NewRouter(app *app.App) *gin.Engine {
 	router.POST("/auth/login", authHandler.Login)
 	router.POST("/auth/register", authHandler.Register)
 
+	router.POST("/callback/payment/va-transfer", paymentCallbackHandler.CallbackPaymentVATransfer)
+
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/product-category", productCategoryHandler.GetProductCategory)
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/product", productHandler.GetProduct)
 
@@ -37,8 +39,6 @@ func NewRouter(app *app.App) *gin.Engine {
 
 	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/payment", paymentHistoryHandler.CreatePayment)
 	router.Use(auth.AuthMiddleware(app.Cfg)).GET("/payment/history", paymentHistoryHandler.GetPaymentHistory)
-
-	router.Use(auth.AuthMiddleware(app.Cfg)).POST("/callback/payment/va-transfer", paymentCallbackHandler.CallbackPaymentVATransfer)
 
 	return router
 }
