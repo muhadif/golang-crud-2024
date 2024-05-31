@@ -40,6 +40,15 @@ const (
 	VATransfer = "VA_TRANSFER"
 )
 
+func (s PaymentMethod) IsValid() bool {
+	switch s {
+	case VATransfer:
+		return true
+	}
+
+	return false
+}
+
 type PaymentStatus string
 
 const (
@@ -50,7 +59,7 @@ const (
 )
 
 type CreatePaymentRequest struct {
-	PaymentMethod PaymentMethod `json:"paymentMethod"`
+	PaymentMethod PaymentMethod `json:"paymentMethod" binding:"required,enum"`
 	UserSerial    string
 }
 

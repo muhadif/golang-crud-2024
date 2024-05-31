@@ -6,6 +6,7 @@ import (
 	service "golang-crud-2024/core/service"
 	"golang-crud-2024/pkg/api"
 	"golang-crud-2024/pkg/context"
+	"golang-crud-2024/pkg/fault"
 	"net/http"
 )
 
@@ -26,7 +27,7 @@ func NewPaymentHistory(paymentHistory service.PaymentHistoryService) PaymentHist
 func (p paymentHistoryHandler) CreatePayment(ctx *gin.Context) {
 	var req *entity.CreatePaymentRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		api.ResponseFailed(ctx, err)
+		api.ResponseFailed(ctx, fault.ErrorDictionary(fault.HTTPPreconditionFailedError, err.Error()))
 		return
 	}
 

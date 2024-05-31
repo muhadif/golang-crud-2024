@@ -48,7 +48,7 @@ To get started with the development or deployment of this purchase system, follo
 
 2. **Install dependencies**:
     ```bash
-    go get -v
+    go mod download
     ```
 
 3. **Run the migration **:
@@ -67,27 +67,10 @@ To get started with the development or deployment of this purchase system, follo
     docker compose up -d
     ```
 
-## Usage
+## Documentation
 
-### Adding Products
-To add a new product, define its overview, price, and stock level in the product component.
-
-### Managing the Cart
-Users can add, remove, or update items in their cart. The cart component ensures that all selected items are stored and displayed correctly.
-
-### Processing Checkout
-During checkout, users need to select a payment method and confirm their purchase. The checkout component will handle the session and prepare the data for payment processing.
-
-### Viewing Payment History
-Users can view their payment history to check the status of their orders. This component maintains a comprehensive record of all transactions.
-
-### Handling Payments
-The third-party payment component is responsible for processing payments through external providers and updating the payment history based on the transaction outcome.
-
-## Contributing
-
-We welcome contributions to improve our purchase system. Please fork the repository and submit pull requests.
-
-## License
-
-This project is licensed under the MIT License.
+### API Documentation
+- [Auth Documentation](documentation/auth-api.md)
+- [Product Documentation](documentation/product-api.md)
+- [Cart and Checkout Documentation](documentation/cart-api.md)
+- [Payment Documentation](documentation/payment-api.md)

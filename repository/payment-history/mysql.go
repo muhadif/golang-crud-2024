@@ -2,6 +2,7 @@ package payment_history
 
 import (
 	"context"
+	"errors"
 	"golang-crud-2024/core/entity"
 	coreErr "golang-crud-2024/core/error"
 	"golang-crud-2024/core/repository"
@@ -103,6 +104,9 @@ func (r repo) GetPaymentHistoryByTransactionID(ctx context.Context, trxID string
 
 	err := r.db.WithContext(ctx).Where("transaction_id", trxID).First(&payment).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fault.ErrorDictionary(fault.HTTPNotFound, coreErr.ErrPaymentNotFound)
+		}
 		return nil, err
 	}
 
@@ -133,6 +137,9 @@ func (r repo) GetPaymentBySerial(ctx context.Context, req *entity.GetPaymentBySe
 
 	err := r.db.WithContext(ctx).Where("serial", req.PaymentSerial).Where("user_serial = ?", req.UserSerial).First(&payment).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fault.ErrorDictionary(fault.HTTPNotFound, coreErr.ErrPaymentNotFound)
+		}
 		return nil, err
 	}
 
