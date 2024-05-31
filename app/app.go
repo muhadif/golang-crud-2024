@@ -1,8 +1,8 @@
 package app
 
 import (
-	"golang-crud-2024/config"
 	service "golang-crud-2024/core/service"
+	"golang-crud-2024/pkg/auth"
 	"golang-crud-2024/repository/cart"
 	"golang-crud-2024/repository/checkout"
 	payment_history "golang-crud-2024/repository/payment-history"
@@ -20,7 +20,7 @@ type App struct {
 	PaymentHistoryService  service.PaymentHistoryService
 	PaymentCallbackService service.PaymentCallbackService
 
-	Cfg config.Config
+	AuthMiddleware auth.Middleware
 }
 
 func NewApp(dep *Dependency) *App {
@@ -36,8 +36,10 @@ func NewApp(dep *Dependency) *App {
 	productService := service.NewProductService(productRepo)
 	cartService := service.NewCartService(cartRepo, productRepo)
 	checkoutService := service.NewCheckoutService(checkoutRepo, cartRepo)
-	paymentHistoryService := service.NewPaymentHistoryService(paymentHistoryRepo, checkoutService)
+	paymentHistoryService := service.NewPaymentHistoryService(paymentHistoryRepo, checkoutService, productRepo)
 	paymentCallbackService := service.NewPaymentCallbackService(paymentHistoryRepo)
+
+	authMiddleware := auth.NewMiddleware(dep.Cfg)
 
 	return &App{
 		AuthService:            authService,
@@ -47,6 +49,6 @@ func NewApp(dep *Dependency) *App {
 		CheckoutService:        checkoutService,
 		PaymentHistoryService:  paymentHistoryService,
 		PaymentCallbackService: paymentCallbackService,
-		Cfg:                    dep.Cfg,
+		AuthMiddleware:         authMiddleware,
 	}
 }

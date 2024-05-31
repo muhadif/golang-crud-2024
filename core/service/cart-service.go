@@ -39,8 +39,19 @@ func (c cartService) CreateCart(ctx context.Context, req *entity.CreateCart) err
 		return err
 	}
 
-	if product.Stock < req.Quantity {
+	quantity := req.Quantity
+	existingCart, _ := c.CartRepo.GetCartsByUserSerialAndProductSerial(ctx, req.UserSerial, req.ProductSerial)
+	if existingCart != nil {
+		existingCart.Quantity += req.Quantity
+		quantity += existingCart.Quantity
+	}
+
+	if product.Stock < quantity {
 		return fault.ErrorDictionary(fault.HTTPBadRequestError, coreErr.ErrProductStock)
+	}
+
+	if existingCart != nil {
+		return c.CartRepo.UpdateCart(ctx, existingCart)
 	}
 
 	return c.CartRepo.CreateCart(ctx, &entity.Cart{

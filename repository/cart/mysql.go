@@ -2,6 +2,7 @@ package cart
 
 import (
 	"context"
+	"errors"
 	"golang-crud-2024/core/entity"
 	"golang-crud-2024/core/repository"
 	"gorm.io/gorm"
@@ -31,6 +32,9 @@ func (r repo) GetCartByID(ctx context.Context, req *entity.GetCartByID) (*entity
 		Preload("Product").
 		First(&cart).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
 		return nil, err
 	}
 
@@ -60,4 +64,18 @@ func (r repo) DeleteCart(ctx context.Context, req *entity.DeleteCart) error {
 	return r.db.Model(&entity.Cart{}).
 		Where("id = ?", req.ID).
 		Where("user_serial = ?", req.UserSerial).Update("deleted_at", time.Now()).Error
+}
+
+func (r repo) GetCartsByUserSerialAndProductSerial(ctx context.Context, userSerial, productSerial string) (*entity.Cart, error) {
+	var cart *entity.Cart
+	err := r.db.WithContext(ctx).Where("user_serial = ?", userSerial).
+		Where("product_serial = ?", productSerial).
+		Where("deleted_at IS NULL").First(&cart).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return cart, nil
 }

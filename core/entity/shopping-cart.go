@@ -31,6 +31,6 @@ type DeleteCart struct {
 }
 
 type GetCartByID struct {
-	ID         string `json:"id"`
+	ID         int64  `json:"id"`
 	UserSerial string `json:"userSerial"`
 }

@@ -92,14 +92,22 @@ func ValidateToken(tokenStr string, cfg config.Config) (*entity.UserClaimToken, 
 	return nil, fault.ErrorDictionary(fault.HTTPUnauthorizedError, coreErr.ErrTokenNotValid)
 }
 
-func AuthMiddleware(cfg config.Config) gin.HandlerFunc {
+type Middleware struct {
+	cfg config.Config
+}
+
+func NewMiddleware(cfg config.Config) Middleware {
+	return Middleware{cfg: cfg}
+}
+
+func (m Middleware) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
 		if authHeader == "" {
 			api.ResponseFailed(c, fault.ErrorDictionary(fault.HTTPUnauthorizedError, coreErr.ErrTokenNotValid))
 			return
 		}
-		userClaim, err := ValidateToken(authHeader, cfg)
+		userClaim, err := ValidateToken(authHeader, m.cfg)
 		if err == nil && userClaim != nil {
 			c.Set("user-context", userClaim)
 			c.Set("userSerial", userClaim.UserSerial)

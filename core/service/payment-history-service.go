@@ -18,10 +18,11 @@ type PaymentHistoryService interface {
 type paymentHistory struct {
 	paymentHistoryRepo repository.PaymentHistoryRepository
 	checkoutService    CheckoutService
+	productRepository  repository.ProductRepository
 }
 
-func NewPaymentHistoryService(paymentHistoryRepo repository.PaymentHistoryRepository, checkoutService CheckoutService) PaymentHistoryService {
-	return &paymentHistory{paymentHistoryRepo: paymentHistoryRepo, checkoutService: checkoutService}
+func NewPaymentHistoryService(paymentHistoryRepo repository.PaymentHistoryRepository, checkoutService CheckoutService, productRepository repository.ProductRepository) PaymentHistoryService {
+	return &paymentHistory{paymentHistoryRepo: paymentHistoryRepo, checkoutService: checkoutService, productRepository: productRepository}
 }
 
 func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePaymentRequest) (*entity.PaymentHistory, error) {
@@ -38,6 +39,8 @@ func (p paymentHistory) CreatePayment(ctx context.Context, req *entity.CreatePay
 
 	var paymentItem []*entity.PaymentHistoryItem
 	for _, item := range currentCheckoutItem.CartItems {
+		item.Product.Stock -= item.Quantity
+
 		paymentItem = append(paymentItem, &entity.PaymentHistoryItem{
 			PaymentHistorySerial: paymentSerial,
 			ProductSerial:        item.ProductSerial,

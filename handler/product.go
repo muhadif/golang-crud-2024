@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang-crud-2024/core/entity"
 	service "golang-crud-2024/core/service"
@@ -26,6 +27,7 @@ func (p productHandler) GetProduct(ctx *gin.Context) {
 		api.ResponseFailed(ctx, err)
 		return
 	}
+	fmt.Println("hello ", req.ProductCategorySerial)
 
 	resp, err := p.productService.GetProduct(ctx, req)
 	if err != nil {

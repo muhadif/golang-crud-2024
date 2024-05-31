@@ -7,6 +7,7 @@ import (
 	"golang-crud-2024/pkg/api"
 	"golang-crud-2024/pkg/context"
 	"net/http"
+	"strconv"
 )
 
 type CartHandler interface {
@@ -57,7 +58,14 @@ func (c cartHandler) GetCart(ctx *gin.Context) {
 
 func (c cartHandler) GetCartByID(ctx *gin.Context) {
 	var req entity.GetCartByID
-	req.ID = ctx.Param("id")
+	idParam := ctx.Param("id")
+	id, err := strconv.Atoi(idParam)
+	req.ID = int64(id)
+
+	if err != nil {
+		api.ResponseFailed(ctx, err)
+
+	}
 	req.UserSerial = context.GetUserSerialFromGinContext(ctx)
 
 	resp, err := c.cartService.GetCartByID(ctx, &req)

@@ -3,7 +3,9 @@ package module
 import (
 	"context"
 	"golang-crud-2024/core/entity"
+	coreErr "golang-crud-2024/core/error"
 	"golang-crud-2024/core/repository"
+	"golang-crud-2024/pkg/fault"
 )
 
 type CheckoutService interface {
@@ -27,6 +29,18 @@ func (c checkoutService) CreateCheckout(ctx context.Context, req *entity.CreateC
 	}
 
 	for _, item := range req.CartItems {
+		cart, err := c.cartRepo.GetCartByID(ctx, &entity.GetCartByID{
+			ID:         item.CartID,
+			UserSerial: req.UserSerial,
+		})
+		if err != nil {
+			return err
+		}
+
+		if cart == nil {
+			return fault.ErrorDictionary(fault.HTTPNotFound, coreErr.ErrCartNotFOund)
+		}
+
 		item.UserSerial = req.UserSerial
 	}
 
