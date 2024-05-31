@@ -1,15 +1,25 @@
 meta {
-  name: Get Product Category
+  name: Get Current Checkout
   type: http
-  seq: 4
+  seq: 12
 }
 
 get {
-  url: http://localhost:8080/product-category
-  body: none
+  url: http://localhost:8080/checkout
+  body: json
   auth: none
 }
 
 headers {
   Authorization: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJVc2VyU2VyaWFsIjoiVVNFUjZlZmVkNDVlZGEiLCJSb2xlIjoidXNlciIsImV4cCI6MTcxNzEwNTM3OH0.PW5RUZmnxpKm7cM8HaagQLBrtMCUotsiSzLUyuUBO48n200Wh0bjxueqqtWj_JlGxadUUam97K66bY09KJl8Zg
+}
+
+body:json {
+  {
+    "cartItems" : [
+      {
+        "cartId": 1
+      }
+    ]
+  }
 }
