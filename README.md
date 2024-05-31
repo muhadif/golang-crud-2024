@@ -3,7 +3,7 @@
 This repository contains the core components of the purchase system for our e-commerce platform. The purchase system is designed using a Model-View-Presenter (MVP) architecture and is divided into five main components.
 
 ## Components
-![a](documentation/base-diagram.png)
+![a](documentation/base-diagram-new.png)
 ### 1. Product
 The **Product** component provides an overview of the available products. Each product is defined by:
 - **Product Overview**: A detailed description of the product.
@@ -51,7 +51,7 @@ To get started with the development or deployment of this purchase system, follo
     go mod download
     ```
 
-3. **Run the migration **:
+3. **Run the migration**:
     ```bash
     make migrate-up
     ```

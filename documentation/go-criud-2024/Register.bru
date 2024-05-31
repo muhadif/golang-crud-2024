@@ -5,14 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/auth/register
+  url: {{baseURL}}/auth/register
   body: json
   auth: none
 }
 
 body:json {
   {
-    "email": "customer@gmail.com",
+    "email": "customer3@gmail.com",
     "fullname": "customer",
     "username": "customer",
     "password": "12345678"

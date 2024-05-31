@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/payment/cancel
+  url: {{baseURL}}/payment/cancel
   body: json
   auth: none
 }
@@ -16,6 +16,6 @@ headers {
 
 body:json {
   {
-    "paymentSerial" : "PAY-d1f87"
+    "paymentSerial" : "PAY-9c78a"
   }
 }

@@ -1,18 +1,18 @@
 meta {
   name: Login
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: http://localhost:8080/auth/login
+  url: {{baseURL}}/auth/login
   body: json
   auth: none
 }
 
 body:json {
   {
-    "email": "customer@gmail.com",
+    "email": "customer3@gmail.com",
     "password": "12345678"
   }
 }
