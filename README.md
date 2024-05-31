@@ -72,6 +72,10 @@ To get started with the development or deployment of this purchase system, follo
 ### Database Design
 ![erd](documentation/erd.png)
 
+#### Architecture Diagram
+![erd](documentation/arch-diagram.png)
+
+
 ### API Documentation
 - [Auth Documentation](documentation/auth-api.md)
 - [Product Documentation](documentation/product-api.md)
