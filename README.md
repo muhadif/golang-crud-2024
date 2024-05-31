@@ -66,6 +66,10 @@ To get started with the development or deployment of this purchase system, follo
     ```bash
     docker compose up -d
     ```
+2. **Run docker app**:
+    ```bash
+   docker run --env-file .env -p 8080:8080  --network golang-crud-2024_app-network muhadif/golang-crud-2024:0.2
+   ```
 
 ## Documentation
 
