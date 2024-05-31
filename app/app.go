@@ -37,7 +37,7 @@ func NewApp(dep *Dependency) *App {
 	cartService := service.NewCartService(cartRepo, productRepo)
 	checkoutService := service.NewCheckoutService(checkoutRepo, cartRepo)
 	paymentHistoryService := service.NewPaymentHistoryService(paymentHistoryRepo, checkoutService, productRepo)
-	paymentCallbackService := service.NewPaymentCallbackService(paymentHistoryRepo)
+	paymentCallbackService := service.NewPaymentCallbackService(paymentHistoryRepo, productRepo)
 
 	authMiddleware := auth.NewMiddleware(dep.Cfg)
 

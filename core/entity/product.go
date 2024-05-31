@@ -17,3 +17,8 @@ func (p Product) TableName() string {
 type GetProductRequest struct {
 	ProductCategorySerial string `form:"productCategorySerial" `
 }
+
+type RollbackStockRequest struct {
+	ProductSerial string
+	RollbackStock int32
+}

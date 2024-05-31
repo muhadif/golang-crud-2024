@@ -47,3 +47,12 @@ func (r repo) GetProduct(ctx context.Context, req entity.GetProductRequest) ([]*
 
 	return products, nil
 }
+
+func (r repo) RollbackStock(ctx context.Context, req *entity.RollbackStockRequest) error {
+	err := r.db.WithContext(ctx).Exec("UPDATE product SET stock = stock + ? WHERE serial = ?", req.RollbackStock, req.ProductSerial).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -106,11 +106,18 @@ func (r repo) GetPaymentHistoryByTransactionID(ctx context.Context, trxID string
 		return nil, err
 	}
 
+	paymentItems, err := r.GetPaymentHistoryItem(ctx, payment.Serial)
+	if err != nil {
+		return nil, err
+	}
+
+	payment.PaymentItems = paymentItems
 	return payment, nil
 }
 
 func (r repo) UpdatePaymentStatus(ctx context.Context, paymentSerial string, status entity.PaymentStatus) error {
 	err := r.db.WithContext(ctx).Model(&entity.PaymentHistory{}).
+		Table("payment_history").
 		Where("serial = ?", paymentSerial).
 		Update("status", status).Error
 
