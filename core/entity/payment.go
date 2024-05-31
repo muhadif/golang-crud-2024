@@ -58,6 +58,15 @@ const (
 	PaymentStatusCancelled = "CANCELLED"
 )
 
+func (s PaymentStatus) IsValid() bool {
+	switch s {
+	case PaymentStatusWaiting, PaymentStatusPaid, PaymentStatusCancelled:
+		return true
+	}
+
+	return false
+}
+
 type CreatePaymentRequest struct {
 	PaymentMethod PaymentMethod `json:"paymentMethod" binding:"required,enum"`
 	UserSerial    string
