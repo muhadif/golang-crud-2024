@@ -2,8 +2,11 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sethvargo/go-limiter/memorystore"
 	"golang-crud-2024/app"
 	"golang-crud-2024/handler"
+	"golang-crud-2024/pkg/security"
+	"time"
 )
 
 func NewRouter(app *app.App) *gin.Engine {
@@ -18,6 +21,16 @@ func NewRouter(app *app.App) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+
+	store, err := memorystore.New(&memorystore.Config{
+		Tokens:   50,
+		Interval: time.Minute,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	router.Use(security.RateLimiterMiddleware(store))
 
 	// auth pth
 	router.POST("/auth/login", authHandler.Login)

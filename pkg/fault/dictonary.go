@@ -28,6 +28,7 @@ const (
 	HTTPNotImplemented          ErrorCode = http.StatusNotImplemented
 	HTTPPreconditionFailedError ErrorCode = http.StatusPreconditionFailed
 	HTTPConflictError           ErrorCode = http.StatusConflict
+	HTTPToManyRequest           ErrorCode = http.StatusTooManyRequests
 )
 
 func (err CustomError) Error() string {
